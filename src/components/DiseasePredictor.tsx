@@ -15,14 +15,22 @@ const DiseasePredictor = () => {
 
   const predict = async () => {
     setLoading(true);
+    setResult(""); // Clear previous result
     try {
-      const res = await fetch("http://127.0.0.1:8000/predict-disease", {
+      // Swapped local URL for your Render production URL
+      const res = await fetch("https://medule-main.onrender.com/predict-disease", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(checked),
       });
+
+      if (!res.ok) throw new Error("Failed to connect to server");
+
       const data = await res.json();
       setResult(data.disease);
+    } catch (error) {
+      console.error("Prediction Error:", error);
+      setResult("Server error. Please try again in a moment.");
     } finally {
       setLoading(false);
     }

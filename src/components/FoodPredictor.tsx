@@ -1,4 +1,6 @@
 import { useState } from "react";
+// 1. Import the centralized API function
+import { predictFood } from "../api"; 
 
 const FoodPredictor = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -15,12 +17,16 @@ const FoodPredictor = () => {
   const upload = async () => {
     if (!file) return;
     setLoading(true);
+    setResult(null); // Clear previous result before starting
+    
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("http://127.0.0.1:8000/predict-food", { method: "POST", body: formData });
-      const data = await res.json();
+      // 2. Use the predictFood function from api.js
+      // This automatically uses the Render URL: https://medule-main.onrender.com/predict-food
+      const data = await predictFood(file);
       setResult(data);
+    } catch (error) {
+      console.error("Connection failed:", error);
+      alert("Failed to connect to the AI server. It might be starting up—please try again in a minute.");
     } finally {
       setLoading(false);
     }

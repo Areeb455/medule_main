@@ -16,7 +16,8 @@ const PatientManager = () => {
     if (!name || !age) return;
     setAdding(true);
     try {
-      await fetch("http://127.0.0.1:8000/add-patient", {
+      // Changed to Render production URL
+      await fetch("https://medule-main.onrender.com/add-patient", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, age: parseInt(age) }),
@@ -24,6 +25,8 @@ const PatientManager = () => {
       setName("");
       setAge("");
       loadPatients();
+    } catch (error) {
+      console.error("Error adding patient:", error);
     } finally {
       setAdding(false);
     }
@@ -32,9 +35,12 @@ const PatientManager = () => {
   const loadPatients = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/patients");
+      // Changed to Render production URL
+      const res = await fetch("https://medule-main.onrender.com/patients");
       const data = await res.json();
       setPatients(data);
+    } catch (error) {
+      console.error("Error loading patients:", error);
     } finally {
       setLoading(false);
     }
