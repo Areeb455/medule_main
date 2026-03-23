@@ -8,7 +8,10 @@ import urllib.request
 from PyPDF2 import PdfReader
 
 app = FastAPI()
-
+origins = [
+    "https://medule-main.vercel.app",
+    "http://localhost:3000", # For local development
+]
 # =========================
 # ✅ CORS
 # =========================
