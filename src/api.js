@@ -1,53 +1,63 @@
-const BASE_URL = "https://medule-main.onrender.com";
-
-// 1. Food Prediction (Multipart/Form-Data)
+// 1. Food Prediction
 export const predictFood = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
-  const response = await fetch(`${BASE_URL}/predict-food`, {
+
+  const response = await fetch("https://medule-main.onrender.com/predict-food", {
     method: "POST",
     body: formData,
   });
+
+  if (!response.ok) throw new Error("Food prediction failed");
   return response.json();
 };
 
-// 2. PDF Parser (Multipart/Form-Data)
+// 2. PDF Parser
 export const parsePDF = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
-  const response = await fetch(`${BASE_URL}/parse-pdf`, {
+
+  const response = await fetch("https://medule-main.onrender.com/parse-pdf", {
     method: "POST",
     body: formData,
   });
+
+  if (!response.ok) throw new Error("PDF parsing failed");
   return response.json();
 };
 
-// 3. Disease Predictor (JSON POST)
+// 3. Disease Predictor
 export const predictDisease = async (symptoms) => {
-  // Expects symptoms object: { fever: true, cough: false, fatigue: true }
-  const response = await fetch(`${BASE_URL}/predict-disease`, {
+  // Expects JSON: { "fever": true, "cough": false, "fatigue": true }
+  const response = await fetch("https://medule-main.onrender.com/predict-disease", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(symptoms),
   });
+
+  if (!response.ok) throw new Error("Disease prediction failed");
   return response.json();
 };
 
-// 4. Add Patient (JSON POST)
+// 4. Add Patient
 export const addPatient = async (patientData) => {
-  // Expects patientData: { name: "John Doe", age: 30 }
-  const response = await fetch(`${BASE_URL}/add-patient`, {
+  // Expects JSON: { "name": "string", "age": 0 }
+  const response = await fetch("https://medule-main.onrender.com/add-patient", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(patientData),
   });
+
+  if (!response.ok) throw new Error("Failed to add patient");
   return response.json();
 };
 
-// 5. Get Patients (GET)
+// 5. Get All Patients
 export const getPatients = async () => {
-  const response = await fetch(`${BASE_URL}/patients`, {
+  const response = await fetch("https://medule-main.onrender.com/patients", {
     method: "GET",
   });
+
+  if (!response.ok) throw new Error("Failed to fetch patients");
   return response.json();
 };
